@@ -29,10 +29,8 @@
 
 @interface SwiftTryCatch : NSObject
 
-/**
- Provides try catch functionality for swift by wrapping around Objective-C
- */
-+ (void)tryRun:(void (^)())tryRun catchRun:(void (^)(NSException *))catchRun finallyRun:(void (^)())finallyRun;
++ (BOOL)catchException:(void(^)())tryBlock error:(__autoreleasing NSError **)error;
 + (void)throwString:(NSString*)s;
 + (void)throwException:(NSException*)e;
+
 @end

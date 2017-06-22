@@ -29,29 +29,25 @@
 
 @implementation SwiftTryCatch
 
-/**
- Provides try catch functionality for swift by wrapping around Objective-C
- */
-+(void)tryRun:(void (^)())tryRun catchRun:(void (^)(NSException *))catchRun finallyRun:(void (^)())finallyRun {
++ (BOOL)catchException:(void(^)())tryBlock error:(__autoreleasing NSError **)error {
     @try {
-        tryRun ? tryRun() : nil;
+        tryBlock();
+        return YES;
     }
     @catch (NSException *exception) {
-        catchRun ? catchRun(exception) : nil;
-    }
-    @finally {
-        finallyRun ? finallyRun() : nil;
+        *error = [[NSError alloc] initWithDomain:exception.name code:0 userInfo:exception.userInfo];
+        return NO;
     }
 }
 
 + (void)throwString:(NSString*)s
 {
-	@throw [NSException exceptionWithName:s reason:s userInfo:nil];
+    @throw [NSException exceptionWithName:s reason:s userInfo:nil];
 }
 
 + (void)throwException:(NSException*)e
 {
-	@throw e;
+    @throw e;
 }
 
 @end
